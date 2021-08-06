@@ -2,6 +2,8 @@
 
 #import <Metal/Metal.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Prefix sum for uint32 data.
 @interface ScanKernel : NSObject
 
@@ -16,3 +18,5 @@
 - (id<MTLBuffer>) getAux2;
 
 @end
+
+NS_ASSUME_NONNULL_END
