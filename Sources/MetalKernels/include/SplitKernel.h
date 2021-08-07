@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
                    bit:(uint)bit
                 length:(uint)length;
 
+@property uint maxLength;
+
 @end
 
 NS_ASSUME_NONNULL_END

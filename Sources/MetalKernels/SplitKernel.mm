@@ -35,6 +35,19 @@
     return self;
 }
 
+- (uint) maxLength {
+    return eBuffer.length / sizeof(uint);
+}
+
+- (void) setMaxLength:(uint)maxLength {
+    if(eBuffer.length / sizeof(uint) != maxLength) {
+        auto device = prepPipeline.device;
+        auto bytes = maxLength * sizeof(uint);
+        eBuffer = [device newBufferWithLength:bytes options:MTLResourceStorageModePrivate];
+        fBuffer = [device newBufferWithLength:bytes options:MTLResourceStorageModePrivate];
+    }
+}
+
 - (id<MTLComputePipelineState>) makeComputePipeline:(NSString*)name library:(id<MTLLibrary>) lib device:(id<MTLDevice>)device
 {
     auto f = [lib newFunctionWithName:name];
