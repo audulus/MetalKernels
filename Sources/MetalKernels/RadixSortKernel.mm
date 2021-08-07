@@ -35,4 +35,12 @@
     [blit endEncoding];
 }
 
+- (uint) maxLength {
+    return splitKernel.maxLength;
+}
+
+- (void) setMaxLength:(uint)maxLength {
+    splitKernel.maxLength = maxLength;
+}
+
 @end

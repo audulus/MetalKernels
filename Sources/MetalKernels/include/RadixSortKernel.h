@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
                 output:(id<MTLBuffer>)outputBuf
                 length:(uint)length;
 
+@property uint maxLength;
+
 @end
 
 NS_ASSUME_NONNULL_END
