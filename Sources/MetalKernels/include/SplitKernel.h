@@ -13,10 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
                    bit:(uint)bit
                 length:(uint)length;
 
-// For debugging.
-- (id<MTLBuffer>) getE;
-- (id<MTLBuffer>) getF;
-
 @end
 
 NS_ASSUME_NONNULL_END

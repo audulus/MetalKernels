@@ -28,8 +28,8 @@
         prepPipeline = [self makeComputePipeline:@"split_prep" library:lib device:device];
         scatterPipeline = [self makeComputePipeline:@"split_scatter" library:lib device:device];
         scanKernel = [[ScanKernel alloc] init:device];
-        eBuffer = [device newBufferWithLength:1024 options:MTLResourceStorageModeShared];
-        fBuffer = [device newBufferWithLength:1024 options:MTLResourceStorageModeShared];
+        eBuffer = [device newBufferWithLength:1024 options:MTLResourceStorageModePrivate];
+        fBuffer = [device newBufferWithLength:1024 options:MTLResourceStorageModePrivate];
 
     }
     return self;
@@ -85,14 +85,6 @@
 
     [encoder endEncoding];
 
-}
-
-- (id<MTLBuffer>) getE {
-    return eBuffer;
-}
-
-- (id<MTLBuffer>) getF {
-    return fBuffer;
 }
 
 @end
