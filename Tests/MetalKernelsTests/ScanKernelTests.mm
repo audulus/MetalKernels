@@ -63,7 +63,7 @@
         }
     }
     
-    uint* result = (uint*) [outBuf contents];
+    uint* result = (uint*) outBuf.contents;
     
     for(int i=0;i<n;++i)
     {
@@ -96,7 +96,7 @@
     [buf commit];
     [buf waitUntilCompleted];
 
-    uint* result = (uint*) [outBuf contents];
+    uint* result = (uint*) outBuf.contents;
 
     uint sum = 0;
     for(int i=0;i<n;++i)
