@@ -54,6 +54,7 @@
                    bit:(uint)bit
                 length:(uint)length
 {
+    assert(length < eBuffer.length/sizeof(uint));
 
     auto encoder = [buffer computeCommandEncoder];
 
