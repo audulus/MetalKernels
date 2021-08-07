@@ -6,6 +6,7 @@
 
 @interface ScanKernelTests : XCTestCase {
     id<MTLDevice> device;
+    id<MTLCommandQueue> queue;
     ScanKernel* kernel;
 }
 
@@ -15,6 +16,7 @@
 
 - (void)setUp {
     device = MTLCreateSystemDefaultDevice();
+    queue = [device newCommandQueue];
     kernel = [[ScanKernel alloc] init:device];
 }
 
@@ -31,9 +33,7 @@
     auto inBuf = [device newBufferWithBytes:vec.data() length:vec.size()*sizeof(uint) options:MTLResourceStorageModeShared];
     
     auto outBuf = [device newBufferWithLength:vec.size()*sizeof(uint) options:MTLResourceStorageModeShared];
-    
-    auto queue = [device newCommandQueue];
-    
+
     auto buf = [queue commandBuffer];
     
     [kernel encodeScanTo:buf input:inBuf output:outBuf length:n];
@@ -89,8 +89,6 @@
 
     auto outBuf = [device newBufferWithLength:vec.size()*sizeof(uint) options:MTLResourceStorageModeShared];
 
-    auto queue = [device newCommandQueue];
-
     auto buf = [queue commandBuffer];
 
     [kernel encodeScanTo:buf input:inBuf output:outBuf length:n];
@@ -125,9 +123,7 @@
     auto inBuf = [device newBufferWithBytes:vec.data() length:vec.size()*sizeof(uint) options:MTLResourceStorageModeShared];
     
     auto outBuf = [device newBufferWithLength:vec.size()*sizeof(uint) options:MTLResourceStorageModeShared];
-    
-    auto queue = [device newCommandQueue];
-    
+
     // Warm up.
     for(int i=0;i<10;++i)
     {
