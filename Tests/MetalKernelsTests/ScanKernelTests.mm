@@ -4,6 +4,9 @@
 #import "ScanKernel.h"
 #include <vector>
 
+// Many iOS devices have a max buffer size of 256MB.
+#define MAX_BUFFER_SIZE (256*1024*1024)
+
 @interface ScanKernelTests : XCTestCase {
     id<MTLDevice> device;
     id<MTLCommandQueue> queue;
@@ -22,7 +25,7 @@
 
 - (void)testScan
 {
-    int n = 1024*1024*256/4; // Max metal buffer size.
+    int n = MAX_BUFFER_SIZE/sizeof(uint);
     
     std::vector<uint> vec(n);
     for(int i=0;i<n;++i)
@@ -77,7 +80,7 @@
 
 - (void) testScan2 {
 
-    int n = 1024*1024*256/4; // Max metal buffer size.
+    int n = MAX_BUFFER_SIZE/sizeof(uint);
 
     std::vector<uint> vec(n);
     for(int i=0;i<n;++i)
