@@ -4,11 +4,11 @@
 #import "SplitKernel.h"
 #include <vector>
 
-@interface Test : XCTestCase
+@interface SplitKernelTests : XCTestCase
 
 @end
 
-@implementation Test
+@implementation SplitKernelTests
 
 
 - (void)testSplitKernel {
