@@ -48,4 +48,44 @@
 
 }
 
+// Many iOS devices have a max buffer size of 256MB.
+#define MAX_BUFFER_SIZE (256*1024*1024)
+
+- (void)testRadixSort2 {
+
+    int n = MAX_BUFFER_SIZE/sizeof(uint);
+    std::vector<uint> vec(n);
+    for(int i=0;i<n;++i) {
+        vec[i] = rand();
+    }
+
+    [kernel setMaxLength:n];
+
+    auto inBuf = [device newBufferWithBytes:vec.data() length:vec.size()*sizeof(uint) options:MTLResourceStorageModeShared];
+
+    auto outBuf = [device newBufferWithLength:vec.size()*sizeof(uint) options:MTLResourceStorageModeShared];
+
+    auto buf = [queue commandBuffer];
+
+    [kernel encodeSortTo:buf input:inBuf output:outBuf length:n];
+
+    [buf commit];
+    [buf waitUntilCompleted];
+    printf("GPU radix sort time: %f\n", buf.GPUEndTime - buf.GPUStartTime);
+
+    auto outPtr = (uint*) outBuf.contents;
+
+    auto start = [NSDate date];
+    std::sort(vec.begin(), vec.end());
+    printf("std::sort time: %f\n", [[NSDate date] timeIntervalSinceDate:start]);
+
+    for(int i=0;i<n;++i) {
+        XCTAssertEqual(outPtr[i], vec[i]);
+        if(outPtr[i] != vec[i]) {
+            break;
+        }
+    }
+
+}
+
 @end
