@@ -4,18 +4,22 @@
 #import "ScanKernel.h"
 #include <vector>
 
-@interface ScanKernelTests : XCTestCase
+@interface ScanKernelTests : XCTestCase {
+    id<MTLDevice> device;
+    ScanKernel* kernel;
+}
 
 @end
 
 @implementation ScanKernelTests
 
-- (void)testScanKernel
+- (void)setUp {
+    device = MTLCreateSystemDefaultDevice();
+    kernel = [[ScanKernel alloc] init:device];
+}
+
+- (void)testScan
 {
-    auto device = MTLCreateSystemDefaultDevice();
-    
-    auto kernel = [[ScanKernel alloc] init:device];
-    
     int n = 1024*1024*256/4; // Max metal buffer size.
     
     std::vector<uint> vec(n);
@@ -73,10 +77,6 @@
 
 - (void) testScan2 {
 
-    auto device = MTLCreateSystemDefaultDevice();
-
-    auto kernel = [[ScanKernel alloc] init:device];
-
     int n = 1024*1024*256/4; // Max metal buffer size.
 
     std::vector<uint> vec(n);
@@ -114,10 +114,6 @@
 
 - (void)testScanKernelPerf
 {
-    auto device = MTLCreateSystemDefaultDevice();
-    
-    auto kernel = [[ScanKernel alloc] init:device];
-    
     int n = 1000*1000; // 1m elements
     
     std::vector<uint> vec(n);
