@@ -35,23 +35,13 @@
     [buf commit];
     [buf waitUntilCompleted];
 
+    uint expected[10] = { 0, 2, 4, 6, 8, 1, 3, 5, 7, 9};
     auto outPtr = (uint*) outBuf.contents;
-    printf("output:\n");
+
     for(int i=0;i<n;++i) {
-        printf("%d: %d\n", i, outPtr[i]);
+        XCTAssertEqual(outPtr[i], expected[i]);
     }
 
-    auto ePtr = (uint*) [kernel getE].contents;
-    printf("e:\n");
-    for(int i=0;i<n;++i) {
-        printf("%d: %d\n", i, ePtr[i]);
-    }
-
-    auto fPtr = (uint*) [kernel getF].contents;
-    printf("f:\n");
-    for(int i=0;i<n;++i) {
-        printf("%d: %d\n", i, fPtr[i]);
-    }
 }
 
 
