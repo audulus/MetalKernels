@@ -30,7 +30,7 @@ kernel void split_scatter(device const uint* input [[ buffer(SplitBufferIndexInp
     }
 
     uint falses = e[count-1] + f[count-1];
-    uint t = tid - f[tid] - falses;
+    uint t = tid - f[tid] + falses;
     bool b = (input[tid] & (1<<bit)) != 0;
     uint d = b ? t : f[tid];
 
