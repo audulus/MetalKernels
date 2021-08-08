@@ -90,6 +90,8 @@
                 itemSize:(uint)itemSize
                   length:(uint)length {
 
+    assert(length * sizeof(uint) <= keepBuffer.length);
+
     auto enc = [buffer computeCommandEncoder];
     [enc setComputePipelineState:compactPipeline];
     [enc setVisibleFunctionTable:functionTable atBufferIndex:0];
