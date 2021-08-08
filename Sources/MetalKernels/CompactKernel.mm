@@ -93,6 +93,18 @@
 
     [scanKernel encodeScanTo:buffer input:keepBuffer output:destBuffer length:length];
 
+    enc = [buffer computeCommandEncoder];
+    [enc setComputePipelineState:scatterPipeline];
+    [enc setBuffer:inputBuf offset:0 atIndex:0];
+    [enc setBytes:&itemSize length:sizeof(uint) atIndex:1];
+    [enc setBytes:&length length:sizeof(uint) atIndex:2];
+    [enc setBuffer:keepBuffer offset:0 atIndex:3];
+    [enc setBuffer:destBuffer offset:0 atIndex:4];
+    [enc setBuffer:outputBuf offset:0 atIndex:5];
+
+    [enc dispatchThreadgroups:MTLSizeMake(length/SCAN_BLOCKSIZE+1, 1, 1) threadsPerThreadgroup:MTLSizeMake(SCAN_BLOCKSIZE, 1, 1)];
+    [enc endEncoding];
+
 }
 
 @end
