@@ -90,6 +90,8 @@
             break;
         }
     }
+
+    printf("GPU time %f\n", (float) (buf.GPUEndTime - buf.GPUStartTime));
 }
 
 @end
