@@ -53,16 +53,6 @@
     for(int i=0;i<n;++i) {
         XCTAssertEqual(outPtr[i], expected[i]);
     }
-
-    printf("keep:\n");
-    for(int i=0;i<n;++i) {
-        printf("%d: %d\n", i, keepPtr[i]);
-    }
-
-    printf("dest:\n");
-    for(int i=0;i<n;++i) {
-        printf("%d: %d\n", i, destPtr[i]);
-    }
 }
 
 @end
