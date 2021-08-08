@@ -45,9 +45,22 @@
     [buf waitUntilCompleted];
 
     auto outPtr = (uint*) outBuf.contents;
+    auto keepPtr = (uint*) [kernel getKeep].contents;
+    auto destPtr = (uint*) [kernel getDest].contents;
 
+    printf("out:\n");
     for(int i=0;i<n;++i) {
         printf("%d: %d\n", i, outPtr[i]);
+    }
+
+    printf("keep:\n");
+    for(int i=0;i<n;++i) {
+        printf("%d: %d\n", i, keepPtr[i]);
+    }
+
+    printf("dest:\n");
+    for(int i=0;i<n;++i) {
+        printf("%d: %d\n", i, destPtr[i]);
     }
 }
 
