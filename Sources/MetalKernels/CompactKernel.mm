@@ -2,10 +2,15 @@
 
 #import "CompactKernel.h"
 #import "GetMetalLibrary.h"
+#import "ScanKernel.h"
+#import "scan.h"
 
 @interface CompactKernel ()
 {
     id<MTLComputePipelineState> compactPipeline;
+    id<MTLBuffer> keepBuffer;
+    id<MTLBuffer> destBuffer;
+    ScanKernel* scanKernel;
 }
 
 @end
@@ -46,6 +51,11 @@
             NSLog(@"Failed to create pipeline state: %@", error.localizedDescription);
             return nil;
         }
+
+        keepBuffer = [device newBufferWithLength:1024 options:MTLResourceStorageModePrivate];
+        destBuffer = [device newBufferWithLength:1024 options:MTLResourceStorageModePrivate];
+
+        scanKernel = [[ScanKernel alloc] init:device];
     }
     return self;
 }
@@ -68,6 +78,17 @@
                   output:(id<MTLBuffer>)outputBuf
                 itemSize:(uint)itemSize
                   length:(uint)length {
+
+    auto enc = [buffer computeCommandEncoder];
+    [enc setComputePipelineState:compactPipeline];
+    [enc setBuffer:inputBuf offset:0 atIndex:0];
+    [enc setBuffer:keepBuffer offset:0 atIndex:1];
+    [enc setBytes:&itemSize length:sizeof(uint) atIndex:2];
+    [enc setBytes:&length length:sizeof(uint) atIndex:3];
+    [enc dispatchThreadgroups:MTLSizeMake(length/SCAN_BLOCKSIZE+1, 1, 1) threadsPerThreadgroup:MTLSizeMake(SCAN_BLOCKSIZE, 1, 1)];
+    [enc endEncoding];
+
+    [scanKernel encodeScanTo:buffer input:keepBuffer output:destBuffer length:length];
 
 }
 
