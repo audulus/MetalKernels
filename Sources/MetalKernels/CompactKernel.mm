@@ -8,6 +8,7 @@
 @interface CompactKernel ()
 {
     id<MTLComputePipelineState> compactPipeline;
+    id<MTLComputePipelineState> scatterPipeline;
     id<MTLBuffer> keepBuffer;
     id<MTLBuffer> destBuffer;
     ScanKernel* scanKernel;
@@ -56,6 +57,8 @@
         destBuffer = [device newBufferWithLength:1024 options:MTLResourceStorageModePrivate];
 
         scanKernel = [[ScanKernel alloc] init:device];
+
+        scatterPipeline = [self makeComputePipeline:@"compact_scatter" library:lib device:device];
     }
     return self;
 }
