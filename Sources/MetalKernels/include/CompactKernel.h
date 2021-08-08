@@ -14,6 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
                 itemSize:(uint)itemSize
                   length:(uint)length;
 
+// for debugging
+- (id<MTLBuffer>) getKeep;
+- (id<MTLBuffer>) getDest;
+
 @end
 
 NS_ASSUME_NONNULL_END

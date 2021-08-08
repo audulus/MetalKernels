@@ -107,4 +107,13 @@
 
 }
 
+// for debugging
+- (id<MTLBuffer>) getKeep {
+    return keepBuffer;
+}
+
+- (id<MTLBuffer>) getDest {
+    return destBuffer;
+}
+
 @end
