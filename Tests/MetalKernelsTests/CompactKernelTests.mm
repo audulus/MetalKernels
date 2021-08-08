@@ -48,9 +48,10 @@
     auto keepPtr = (uint*) [kernel getKeep].contents;
     auto destPtr = (uint*) [kernel getDest].contents;
 
-    printf("out:\n");
+    uint expected[10] = { 1, 3, 5, 7, 9, 0, 0, 0, 0, 0 };
+
     for(int i=0;i<n;++i) {
-        printf("%d: %d\n", i, outPtr[i]);
+        XCTAssertEqual(outPtr[i], expected[i]);
     }
 
     printf("keep:\n");
