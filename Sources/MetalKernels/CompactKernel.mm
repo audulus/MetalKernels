@@ -11,6 +11,7 @@
     id<MTLComputePipelineState> scatterPipeline;
     id<MTLBuffer> keepBuffer;
     id<MTLBuffer> destBuffer;
+    id<MTLVisibleFunctionTable> functionTable;
     ScanKernel* scanKernel;
 }
 
@@ -23,6 +24,7 @@
     self = [super init];
     if (self) {
         auto device = predicate.device;
+        assert(device.supportsFunctionPointers);
         auto lib = GetMetalLibrary(device);
 
         auto linkedFunctions = [[MTLLinkedFunctions alloc] init];
@@ -53,8 +55,14 @@
             return nil;
         }
 
-        keepBuffer = [device newBufferWithLength:1024 options:MTLResourceStorageModePrivate];
-        destBuffer = [device newBufferWithLength:1024 options:MTLResourceStorageModePrivate];
+        auto fdesc = [[MTLVisibleFunctionTableDescriptor alloc] init];
+        fdesc.functionCount = 1;
+        functionTable = [compactPipeline newVisibleFunctionTableWithDescriptor:fdesc];
+        auto handle = [compactPipeline functionHandleWithFunction:predicate];
+        [functionTable setFunction:handle atIndex:0];
+
+        keepBuffer = [device newBufferWithLength:1024 options:MTLResourceStorageModeShared];
+        destBuffer = [device newBufferWithLength:1024 options:MTLResourceStorageModeShared];
 
         scanKernel = [[ScanKernel alloc] init:device];
 
@@ -84,10 +92,11 @@
 
     auto enc = [buffer computeCommandEncoder];
     [enc setComputePipelineState:compactPipeline];
-    [enc setBuffer:inputBuf offset:0 atIndex:0];
-    [enc setBuffer:keepBuffer offset:0 atIndex:1];
-    [enc setBytes:&itemSize length:sizeof(uint) atIndex:2];
-    [enc setBytes:&length length:sizeof(uint) atIndex:3];
+    [enc setVisibleFunctionTable:functionTable atBufferIndex:0];
+    [enc setBuffer:inputBuf offset:0 atIndex:1];
+    [enc setBuffer:keepBuffer offset:0 atIndex:2];
+    [enc setBytes:&itemSize length:sizeof(uint) atIndex:3];
+    [enc setBytes:&length length:sizeof(uint) atIndex:4];
     [enc dispatchThreadgroups:MTLSizeMake(length/SCAN_BLOCKSIZE+1, 1, 1) threadsPerThreadgroup:MTLSizeMake(SCAN_BLOCKSIZE, 1, 1)];
     [enc endEncoding];
 
