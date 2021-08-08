@@ -8,4 +8,6 @@ Useful kernels for parallel programming.
 
 [`ScanKernel`](https://github.com/Halfspace-LLC/MetalKernels/blob/main/Sources/MetalKernels/include/ScanKernel.h) implements prefix sum for `uint32_t` values.
 
+[`CompactKernel`](https://github.com/Halfspace-LLC/MetalKernels/blob/main/Sources/MetalKernels/include/CompactKernel.h) implements stream compaction for values of user-specified size.
+
 [`RadixSortKernel`](https://github.com/Halfspace-LLC/MetalKernels/blob/main/Sources/MetalKernels/include/RadixSortKernel.h) implements radix sort for `uint32_t` values.
