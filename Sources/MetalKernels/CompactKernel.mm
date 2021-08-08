@@ -116,6 +116,19 @@
 
 }
 
+- (uint) maxLength {
+    return keepBuffer.length / sizeof(uint);
+}
+
+- (void) setMaxLength:(uint)maxLength {
+    if(keepBuffer.length / sizeof(uint) != maxLength) {
+        auto device = compactPipeline.device;
+        auto bytes = maxLength * sizeof(uint);
+        keepBuffer = [device newBufferWithLength:bytes options:MTLResourceStorageModeShared];
+        destBuffer = [device newBufferWithLength:bytes options:MTLResourceStorageModeShared];
+    }
+}
+
 // for debugging
 - (id<MTLBuffer>) getKeep {
     return keepBuffer;

@@ -23,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
                 itemSize:(uint)itemSize
                   length:(uint)length;
 
+@property uint maxLength;
+
 // for debugging
 - (id<MTLBuffer>) getKeep;
 - (id<MTLBuffer>) getDest;
