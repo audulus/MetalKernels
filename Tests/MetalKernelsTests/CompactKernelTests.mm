@@ -92,6 +92,17 @@
     }
 
     printf("GPU time %f\n", (float) (buf.GPUEndTime - buf.GPUStartTime));
+
+    std::vector<uint> compacted;
+    compacted.reserve(n);
+    auto start = [NSDate date];
+    for(int i=0;i<n;++i) {
+        if(vec[i] & 1) {
+            compacted.push_back(vec[i]);
+        }
+    }
+    XCTAssertEqual(compacted[0], 1);
+    printf("CPU time %f\n", (float) [[NSDate date] timeIntervalSinceDate:start]);
 }
 
 @end
