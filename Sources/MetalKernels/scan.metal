@@ -6,11 +6,16 @@ using namespace metal;
 #include "scan.h"
 
 kernel void scan_threadgroups(constant uint& len                                    [[ buffer(ScanBufferIndexLength) ]],
-                              device MTLDispatchThreadgroupsIndirectArguments* args [[ buffer(ScanBufferIndexIndirectArguments) ]])
+                              device MTLDispatchThreadgroupsIndirectArguments* args [[ buffer(ScanBufferIndexIndirectArguments) ]],
+                              device uint* lengths                                  [[ buffer(ScanBufferIndexLengths) ]])
 {
     args[0] = {uint(len/SCAN_BLOCKSIZE + 1), 1, 1};
     args[1] = {uint(len/(SCAN_BLOCKSIZE*SCAN_BLOCKSIZE) + 1), 1, 1};
     args[2] = {1, 1, 1};
+
+    lengths[0] = len;
+    lengths[1] = len/SCAN_BLOCKSIZE;
+    lengths[2] = SCAN_BLOCKSIZE;
 }
 
 kernel void prefixFixup (device uint *input [[ buffer(ScanBufferIndexInput)   ]],
