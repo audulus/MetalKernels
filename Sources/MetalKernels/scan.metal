@@ -5,6 +5,12 @@ using namespace metal;
 
 #include "scan.h"
 
+kernel void scan_threadgroups(constant uint& len,
+                              device MTLDispatchThreadgroupsIndirectArguments* args)
+{
+    *args = {uint(len/64 + 1), 1, 1};
+}
+
 kernel void prefixFixup (device uint *input,
                          device uint *aux,
                          constant uint& len,
