@@ -9,7 +9,7 @@
 extern "C" {
 #endif
 
-id<MTLLibrary> GetMetalLibrary(id<MTLDevice> device);
+id<MTLLibrary> MetalKernelsGetMetalLibrary(id<MTLDevice> device);
 
 #ifdef __cplusplus
 }

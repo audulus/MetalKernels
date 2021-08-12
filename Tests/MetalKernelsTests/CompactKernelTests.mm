@@ -18,7 +18,7 @@
 - (void)setUp {
     device = MTLCreateSystemDefaultDevice();
     queue = [device newCommandQueue];
-    auto lib = GetMetalLibrary(device);
+    auto lib = MetalKernelsGetMetalLibrary(device);
     assert(lib);
     auto fn = [lib newFunctionWithName:@"is_odd"];
     assert(fn);

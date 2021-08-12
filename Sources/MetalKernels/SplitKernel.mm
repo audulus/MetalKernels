@@ -24,7 +24,7 @@
     self = [super init];
     if (self) {
 
-        auto lib = GetMetalLibrary(device);
+        auto lib = MetalKernelsGetMetalLibrary(device);
         prepPipeline = [self makeComputePipeline:@"split_prep" library:lib device:device];
         scatterPipeline = [self makeComputePipeline:@"split_scatter" library:lib device:device];
         scanKernel = [[ScanKernel alloc] init:device];

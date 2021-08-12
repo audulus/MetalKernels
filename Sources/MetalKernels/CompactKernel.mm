@@ -25,7 +25,7 @@
     if (self) {
         auto device = predicate.device;
         assert(device.supportsFunctionPointers);
-        auto lib = GetMetalLibrary(device);
+        auto lib = MetalKernelsGetMetalLibrary(device);
 
         auto linkedFunctions = [[MTLLinkedFunctions alloc] init];
 

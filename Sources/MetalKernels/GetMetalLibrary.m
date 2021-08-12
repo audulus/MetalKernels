@@ -2,7 +2,7 @@
 
 #import "GetMetalLibrary.h"
 
-id<MTLLibrary> GetMetalLibrary(id<MTLDevice> device) {
+id<MTLLibrary> MetalKernelsGetMetalLibrary(id<MTLDevice> device) {
 
     NSBundle* bundle = SWIFTPM_MODULE_BUNDLE;
     assert(bundle);

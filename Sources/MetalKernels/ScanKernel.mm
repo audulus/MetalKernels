@@ -37,7 +37,7 @@
         indirectArgsBuffer = [device newBufferWithLength:3*sizeof(MTLDispatchThreadgroupsIndirectArguments) options:MTLResourceStorageModePrivate];
         lengthsBuffer = [device newBufferWithLength:3*sizeof(uint) options:MTLResourceStorageModePrivate];
         
-        auto lib = GetMetalLibrary(device);
+        auto lib = MetalKernelsGetMetalLibrary(device);
         scanPipeline = [self makeComputePipeline:@"prefixSum" library:lib device:device];
         fixupPipeline = [self makeComputePipeline:@"prefixFixup" library:lib device:device];
         threadgroupsPipeline = [self makeComputePipeline:@"scan_threadgroups" library:lib device:device];
