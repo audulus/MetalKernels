@@ -12,6 +12,7 @@
     id<MTLBuffer> aux2Buffer;
     id<MTLBuffer> aux2ScanBuffer;
     id<MTLBuffer> aux3Buffer;
+    id<MTLBuffer> indirectArgsBuffer;
     
     id<MTLComputePipelineState> scanPipeline;
     id<MTLComputePipelineState> fixupPipeline;
@@ -31,6 +32,7 @@
         aux2Buffer = [device newBufferWithLength:(1024*1024*2) options:MTLResourceStorageModeShared];
         aux2ScanBuffer = [device newBufferWithLength:(1024*1024*2) options:MTLResourceStorageModeShared];
         aux3Buffer = [device newBufferWithLength:(1024) options:MTLResourceStorageModeShared];
+        indirectArgsBuffer = [device newBufferWithLength:3*sizeof(MTLDispatchThreadgroupsIndirectArguments) options:MTLResourceStorageModePrivate];
         
         auto lib = GetMetalLibrary(device);
         scanPipeline = [self makeComputePipeline:@"prefixSum" library:lib device:device];
