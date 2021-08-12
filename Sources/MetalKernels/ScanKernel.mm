@@ -27,11 +27,11 @@
     self = [super init];
     if (self) {
         
-        auxBuffer = [device newBufferWithLength:(1024*1024*10) options:MTLResourceStorageModeShared];
-        auxScanBuffer = [device newBufferWithLength:(1024*1024*10) options:MTLResourceStorageModeShared];
-        aux2Buffer = [device newBufferWithLength:(1024*1024*2) options:MTLResourceStorageModeShared];
-        aux2ScanBuffer = [device newBufferWithLength:(1024*1024*2) options:MTLResourceStorageModeShared];
-        aux3Buffer = [device newBufferWithLength:(1024) options:MTLResourceStorageModeShared];
+        auxBuffer = [device newBufferWithLength:(1024*1024*10) options:MTLResourceStorageModePrivate];
+        auxScanBuffer = [device newBufferWithLength:(1024*1024*10) options:MTLResourceStorageModePrivate];
+        aux2Buffer = [device newBufferWithLength:(1024*1024*2) options:MTLResourceStorageModePrivate];
+        aux2ScanBuffer = [device newBufferWithLength:(1024*1024*2) options:MTLResourceStorageModePrivate];
+        aux3Buffer = [device newBufferWithLength:(1024) options:MTLResourceStorageModePrivate];
         indirectArgsBuffer = [device newBufferWithLength:3*sizeof(MTLDispatchThreadgroupsIndirectArguments) options:MTLResourceStorageModePrivate];
         
         auto lib = GetMetalLibrary(device);
