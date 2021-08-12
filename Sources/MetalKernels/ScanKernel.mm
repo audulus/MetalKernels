@@ -119,4 +119,64 @@
     
 }
 
+- (void) encodeScanIndirectLevelTo:(id<MTLCommandBuffer>)buffer
+                             input:(id<MTLBuffer>)inputBuf
+                            output:(id<MTLBuffer>)outputBuf
+                               aux:(id<MTLBuffer>)auxBuf
+                         argsIndex:(uint)argsIndex
+{
+    auto encoder = [buffer computeCommandEncoder];
+
+    encoder.label = @"scan";
+
+    [encoder setComputePipelineState:scanPipeline];
+
+    [encoder setBuffer:inputBuf offset:0 atIndex:ScanBufferIndexInput];
+    [encoder setBuffer:outputBuf offset:0 atIndex:ScanBufferIndexOutput];
+    [encoder setBuffer:auxBuf offset:0 atIndex:ScanBufferIndexAux];
+
+    int zon = 1;
+    [encoder setBytes:&zon length:sizeof(int) atIndex:ScanBufferIndexZeroff];
+
+    assert( outputBuf.length >= inputBuf.length );
+
+    [encoder dispatchThreadgroupsWithIndirectBuffer:indirectArgsBuffer indirectBufferOffset:argsIndex*sizeof(MTLDispatchThreadgroupsIndirectArguments) threadsPerThreadgroup:MTLSizeMake(SCAN_BLOCKSIZE, 1, 1)];
+
+    [encoder endEncoding];
+}
+
+- (void) encodeFixupIndirectTo:(id<MTLCommandBuffer>)buffer
+                   input:(id<MTLBuffer>)inputBuf
+                     aux:(id<MTLBuffer>)auxBuf
+               argsIndex:(uint)argsIndex
+{
+
+    auto encoder = [buffer computeCommandEncoder];
+
+    [encoder setComputePipelineState:fixupPipeline];
+
+    [encoder setBuffer:inputBuf offset:0 atIndex:ScanBufferIndexInput];
+    [encoder setBuffer:auxBuf offset:0 atIndex:ScanBufferIndexAux];
+
+    [encoder dispatchThreadgroupsWithIndirectBuffer:indirectArgsBuffer indirectBufferOffset:argsIndex*sizeof(MTLDispatchThreadgroupsIndirectArguments) threadsPerThreadgroup:MTLSizeMake(SCAN_BLOCKSIZE, 1, 1)];
+
+    [encoder endEncoding];
+
+}
+
+- (void) encodeScanIndirectTo:(id<MTLCommandBuffer>)buffer
+                        input:(id<MTLBuffer>)inputBuf
+                       output:(id<MTLBuffer>)outputBuf
+                       length:(uint)length;
+{
+
+    [self encodeScanIndirectLevelTo:buffer input:inputBuf output:outputBuf aux:auxBuffer argsIndex:0];
+    [self encodeScanIndirectLevelTo:buffer input:auxBuffer output:auxScanBuffer aux:aux2Buffer argsIndex:1];
+    [self encodeScanIndirectLevelTo:buffer input:aux2Buffer output:aux2ScanBuffer aux:aux3Buffer argsIndex:2];
+
+    [self encodeFixupIndirectTo:buffer input:auxScanBuffer aux:aux2ScanBuffer argsIndex:1];
+    [self encodeFixupIndirectTo:buffer input:outputBuf aux:auxScanBuffer argsIndex:0];
+
+}
+
 @end
