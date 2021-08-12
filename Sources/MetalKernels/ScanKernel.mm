@@ -184,6 +184,7 @@
     [encoder setBuffer:lengthBuf offset:0 atIndex:ScanBufferIndexLength];
     [encoder setBuffer:indirectArgsBuffer offset:0 atIndex:ScanBufferIndexIndirectArguments];
     [encoder setBuffer:lengthsBuffer offset:0 atIndex:ScanBufferIndexLengths];
+    [encoder dispatchThreadgroups:MTLSizeMake(1, 1, 1) threadsPerThreadgroup:MTLSizeMake(1, 1, 1)];
     [encoder endEncoding];
 
     [self encodeScanIndirectLevelTo:buffer input:inputBuf output:outputBuf aux:auxBuffer argsIndex:0];
