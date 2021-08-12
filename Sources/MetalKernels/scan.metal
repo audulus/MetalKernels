@@ -8,7 +8,9 @@ using namespace metal;
 kernel void scan_threadgroups(constant uint& len                                    [[ buffer(ScanBufferIndexLength) ]],
                               device MTLDispatchThreadgroupsIndirectArguments* args [[ buffer(ScanBufferIndexIndirectArguments) ]])
 {
-    *args = {uint(len/SCAN_BLOCKSIZE + 1), 1, 1};
+    args[0] = {uint(len/SCAN_BLOCKSIZE + 1), 1, 1};
+    args[1] = {uint(len/(SCAN_BLOCKSIZE*SCAN_BLOCKSIZE) + 1), 1, 1};
+    args[2] = {1, 1, 1};
 }
 
 kernel void prefixFixup (device uint *input [[ buffer(ScanBufferIndexInput)   ]],
