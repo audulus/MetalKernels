@@ -13,6 +13,7 @@
     id<MTLBuffer> aux2ScanBuffer;
     id<MTLBuffer> aux3Buffer;
     id<MTLBuffer> indirectArgsBuffer;
+    id<MTLBuffer> lengthsBuffer;
     
     id<MTLComputePipelineState> scanPipeline;
     id<MTLComputePipelineState> fixupPipeline;
@@ -34,6 +35,7 @@
         aux2ScanBuffer = [device newBufferWithLength:(1024*1024*2) options:MTLResourceStorageModePrivate];
         aux3Buffer = [device newBufferWithLength:(1024) options:MTLResourceStorageModePrivate];
         indirectArgsBuffer = [device newBufferWithLength:3*sizeof(MTLDispatchThreadgroupsIndirectArguments) options:MTLResourceStorageModePrivate];
+        lengthsBuffer = [device newBufferWithLength:3*sizeof(uint) options:MTLResourceStorageModePrivate];
         
         auto lib = GetMetalLibrary(device);
         scanPipeline = [self makeComputePipeline:@"prefixSum" library:lib device:device];
@@ -136,6 +138,7 @@
     [encoder setBuffer:inputBuf offset:0 atIndex:ScanBufferIndexInput];
     [encoder setBuffer:outputBuf offset:0 atIndex:ScanBufferIndexOutput];
     [encoder setBuffer:auxBuf offset:0 atIndex:ScanBufferIndexAux];
+    [encoder setBuffer:lengthsBuffer offset:argsIndex*sizeof(uint) atIndex:ScanBufferIndexLength];
 
     int zon = 1;
     [encoder setBytes:&zon length:sizeof(int) atIndex:ScanBufferIndexZeroff];
@@ -159,6 +162,7 @@
 
     [encoder setBuffer:inputBuf offset:0 atIndex:ScanBufferIndexInput];
     [encoder setBuffer:auxBuf offset:0 atIndex:ScanBufferIndexAux];
+    [encoder setBuffer:lengthsBuffer offset:argsIndex*sizeof(uint) atIndex:ScanBufferIndexLength];
 
     [encoder dispatchThreadgroupsWithIndirectBuffer:indirectArgsBuffer indirectBufferOffset:argsIndex*sizeof(MTLDispatchThreadgroupsIndirectArguments) threadsPerThreadgroup:MTLSizeMake(SCAN_BLOCKSIZE, 1, 1)];
 
@@ -169,8 +173,14 @@
 - (void) encodeScanIndirectTo:(id<MTLCommandBuffer>)buffer
                         input:(id<MTLBuffer>)inputBuf
                        output:(id<MTLBuffer>)outputBuf
-                       length:(uint)length;
+                       length:(id<MTLBuffer>)lengthBuf;
 {
+    auto encoder = [buffer computeCommandEncoder];
+    [encoder setComputePipelineState:threadgroupsPipeline];
+    [encoder setBuffer:lengthBuf offset:0 atIndex:ScanBufferIndexLength];
+    [encoder setBuffer:indirectArgsBuffer offset:0 atIndex:ScanBufferIndexIndirectArguments];
+    [encoder setBuffer:lengthsBuffer offset:0 atIndex:ScanBufferIndexLengths];
+    [encoder endEncoding];
 
     [self encodeScanIndirectLevelTo:buffer input:inputBuf output:outputBuf aux:auxBuffer argsIndex:0];
     [self encodeScanIndirectLevelTo:buffer input:auxBuffer output:auxScanBuffer aux:aux2Buffer argsIndex:1];
