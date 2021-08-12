@@ -145,7 +145,9 @@
 
     assert( outputBuf.length >= inputBuf.length );
 
-    [encoder dispatchThreadgroupsWithIndirectBuffer:indirectArgsBuffer indirectBufferOffset:argsIndex*sizeof(MTLDispatchThreadgroupsIndirectArguments) threadsPerThreadgroup:MTLSizeMake(SCAN_BLOCKSIZE, 1, 1)];
+    [encoder dispatchThreadgroupsWithIndirectBuffer:indirectArgsBuffer
+                               indirectBufferOffset:argsIndex*sizeof(MTLDispatchThreadgroupsIndirectArguments)
+                              threadsPerThreadgroup:MTLSizeMake(SCAN_BLOCKSIZE, 1, 1)];
 
     [encoder endEncoding];
 }
@@ -164,7 +166,9 @@
     [encoder setBuffer:auxBuf offset:0 atIndex:ScanBufferIndexAux];
     [encoder setBuffer:lengthsBuffer offset:argsIndex*sizeof(uint) atIndex:ScanBufferIndexLength];
 
-    [encoder dispatchThreadgroupsWithIndirectBuffer:indirectArgsBuffer indirectBufferOffset:argsIndex*sizeof(MTLDispatchThreadgroupsIndirectArguments) threadsPerThreadgroup:MTLSizeMake(SCAN_BLOCKSIZE, 1, 1)];
+    [encoder dispatchThreadgroupsWithIndirectBuffer:indirectArgsBuffer
+                               indirectBufferOffset:argsIndex*sizeof(MTLDispatchThreadgroupsIndirectArguments)
+                              threadsPerThreadgroup:MTLSizeMake(SCAN_BLOCKSIZE, 1, 1)];
 
     [encoder endEncoding];
 
