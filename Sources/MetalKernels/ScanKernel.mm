@@ -119,14 +119,4 @@
     
 }
 
-- (id<MTLBuffer>) getAux
-{
-    return auxBuffer;
-}
-
-- (id<MTLBuffer>) getAux2
-{
-    return aux2Buffer;
-}
-
 @end

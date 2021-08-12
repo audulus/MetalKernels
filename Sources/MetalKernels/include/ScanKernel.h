@@ -13,10 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
                output:(id<MTLBuffer>)outputBuf
                length:(uint)length;
 
-// For debugging.
-- (id<MTLBuffer>) getAux;
-- (id<MTLBuffer>) getAux2;
-
 @end
 
 NS_ASSUME_NONNULL_END

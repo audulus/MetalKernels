@@ -44,28 +44,6 @@
     [buf commit];
     [buf waitUntilCompleted];
     
-    uint* aux = (uint*) [kernel getAux].contents;
-    
-    for(int i=0;i<512;++i)
-    {
-        XCTAssertEqual(aux[i], 1024);
-        if(aux[i] != 1024)
-        {
-            break;
-        }
-    }
-    
-    uint* aux2 = (uint*) [kernel getAux2].contents;
-    
-    for(int i=0;i<64;++i)
-    {
-        XCTAssertEqual(aux2[i], 1024*1024);
-        if(aux2[i] != 1024*1024)
-        {
-            break;
-        }
-    }
-    
     uint* result = (uint*) outBuf.contents;
     
     for(int i=0;i<n;++i)
