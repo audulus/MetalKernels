@@ -18,11 +18,11 @@ kernel void scan_threadgroups(constant uint& len                                
     lengths[2] = SCAN_BLOCKSIZE;
 }
 
-kernel void prefixFixup (device uint *input [[ buffer(ScanBufferIndexInput)   ]],
-                         device uint *aux   [[ buffer(ScanBufferIndexAux)     ]],
-                         constant uint& len [[ buffer(ScanBufferIndexLength)  ]],
-                         uint threadIdx     [[ thread_position_in_threadgroup ]],
-                         uint blockIdx      [[ threadgroup_position_in_grid   ]])
+kernel void prefixFixup (device uint *input     [[ buffer(ScanBufferIndexInput)   ]],
+                         device uint *aux       [[ buffer(ScanBufferIndexAux)     ]],
+                         device const uint& len [[ buffer(ScanBufferIndexLength)  ]],
+                         uint threadIdx         [[ thread_position_in_threadgroup ]],
+                         uint blockIdx          [[ threadgroup_position_in_grid   ]])
 {
     unsigned int t = threadIdx;
     unsigned int start = t + 2 * blockIdx * SCAN_BLOCKSIZE;
@@ -33,7 +33,7 @@ kernel void prefixFixup (device uint *input [[ buffer(ScanBufferIndexInput)   ]]
 kernel void prefixSum (device uint* input     [[ buffer(ScanBufferIndexInput)   ]],
                        device uint* output    [[ buffer(ScanBufferIndexOutput)  ]],
                        device uint* aux       [[ buffer(ScanBufferIndexAux)     ]],
-                       constant uint& len     [[ buffer(ScanBufferIndexLength)  ]],
+                       device const uint& len [[ buffer(ScanBufferIndexLength)  ]],
                        constant uint& zeroff  [[ buffer(ScanBufferIndexZeroff)  ]],
                        uint threadIdx         [[ thread_position_in_threadgroup ]],
                        uint blockIdx          [[ threadgroup_position_in_grid   ]])
