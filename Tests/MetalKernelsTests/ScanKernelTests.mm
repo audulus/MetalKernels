@@ -125,4 +125,39 @@
     
 }
 
+- (void)testScanIndirect
+{
+    int n = MAX_BUFFER_SIZE/sizeof(uint);
+
+    std::vector<uint> vec(n);
+    for(int i=0;i<n;++i)
+    {
+        vec[i] = 1;
+    }
+
+    auto inBuf = [device newBufferWithBytes:vec.data() length:vec.size()*sizeof(uint) options:MTLResourceStorageModeShared];
+
+    auto outBuf = [device newBufferWithLength:vec.size()*sizeof(uint) options:MTLResourceStorageModeShared];
+
+    auto lenBuf = [device newBufferWithBytes:&n length:sizeof(int) options:MTLResourceStorageModeShared];
+
+    auto buf = [queue commandBuffer];
+
+    [kernel encodeScanIndirectTo:buf input:inBuf output:outBuf length:lenBuf];
+
+    [buf commit];
+    [buf waitUntilCompleted];
+
+    uint* result = (uint*) outBuf.contents;
+
+    for(int i=0;i<n;++i)
+    {
+        XCTAssertEqual(result[i], i);
+        if(result[i] != i)
+        {
+            break;
+        }
+    }
+}
+
 @end
