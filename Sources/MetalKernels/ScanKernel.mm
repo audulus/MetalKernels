@@ -16,6 +16,7 @@
     
     id<MTLComputePipelineState> scanPipeline;
     id<MTLComputePipelineState> fixupPipeline;
+    id<MTLComputePipelineState> threadgroupsPipeline;
 }
 
 @end
@@ -37,6 +38,7 @@
         auto lib = GetMetalLibrary(device);
         scanPipeline = [self makeComputePipeline:@"prefixSum" library:lib device:device];
         fixupPipeline = [self makeComputePipeline:@"prefixFixup" library:lib device:device];
+        threadgroupsPipeline = [self makeComputePipeline:@"scan_threadgroups" library:lib device:device];
         
     }
     return self;
