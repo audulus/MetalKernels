@@ -9,7 +9,8 @@ enum ScanBufferIndex {
     ScanBufferIndexAux,
     ScanBufferIndexLength,
     ScanBufferIndexZeroff,
-    ScanBufferIndexIndirectArguments
+    ScanBufferIndexIndirectArguments,
+    ScanBufferIndexLengths,
 };
 
 #define SCAN_BLOCKSIZE        512
