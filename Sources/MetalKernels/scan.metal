@@ -5,8 +5,8 @@ using namespace metal;
 
 #include "scan.h"
 
-kernel void scan_threadgroups(constant uint& len,
-                              device MTLDispatchThreadgroupsIndirectArguments* args)
+kernel void scan_threadgroups(constant uint& len                                    [[ buffer(ScanBufferIndexLength) ]],
+                              device MTLDispatchThreadgroupsIndirectArguments* args [[ buffer(ScanBufferIndexIndirectArguments) ]])
 {
     *args = {uint(len/SCAN_BLOCKSIZE + 1), 1, 1};
 }
