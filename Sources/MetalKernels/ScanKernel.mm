@@ -65,13 +65,13 @@
     
     [encoder setComputePipelineState:scanPipeline];
     
-    [encoder setBuffer:inputBuf offset:0 atIndex:0];
-    [encoder setBuffer:outputBuf offset:0 atIndex:1];
-    [encoder setBuffer:auxBuf offset:0 atIndex:2];
-    [encoder setBytes:&length length:sizeof(uint) atIndex:3];
+    [encoder setBuffer:inputBuf offset:0 atIndex:ScanBufferIndexInput];
+    [encoder setBuffer:outputBuf offset:0 atIndex:ScanBufferIndexOutput];
+    [encoder setBuffer:auxBuf offset:0 atIndex:ScanBufferIndexAux];
+    [encoder setBytes:&length length:sizeof(uint) atIndex:ScanBufferIndexLength];
     
     int zon = 1;
-    [encoder setBytes:&zon length:sizeof(int) atIndex:4];
+    [encoder setBytes:&zon length:sizeof(int) atIndex:ScanBufferIndexZeroff];
     
     assert( outputBuf.length >= inputBuf.length );
     assert( length/SCAN_BLOCKSIZE+1 < auxBuf.length/sizeof(uint));
@@ -91,9 +91,9 @@
     
     [encoder setComputePipelineState:fixupPipeline];
     
-    [encoder setBuffer:inputBuf offset:0 atIndex:0];
-    [encoder setBuffer:auxBuf offset:0 atIndex:1];
-    [encoder setBytes:&length length:sizeof(uint) atIndex:2];
+    [encoder setBuffer:inputBuf offset:0 atIndex:ScanBufferIndexInput];
+    [encoder setBuffer:auxBuf offset:0 atIndex:ScanBufferIndexAux];
+    [encoder setBytes:&length length:sizeof(uint) atIndex:ScanBufferIndexLength];
     
     [encoder dispatchThreadgroups:MTLSizeMake(length/SCAN_BLOCKSIZE+1, 1, 1) threadsPerThreadgroup:MTLSizeMake(SCAN_BLOCKSIZE, 1, 1)];
     

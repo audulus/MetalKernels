@@ -4,7 +4,11 @@
 #define scan_h
 
 enum ScanBufferIndex {
+    ScanBufferIndexInput,
+    ScanBufferIndexOutput,
+    ScanBufferIndexAux,
     ScanBufferIndexLength,
+    ScanBufferIndexZeroff,
     ScanBufferIndexIndirectArguments
 };
 

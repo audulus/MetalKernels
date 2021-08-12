@@ -11,11 +11,11 @@ kernel void scan_threadgroups(constant uint& len                                
     *args = {uint(len/SCAN_BLOCKSIZE + 1), 1, 1};
 }
 
-kernel void prefixFixup (device uint *input,
-                         device uint *aux,
-                         constant uint& len,
-                         uint threadIdx [[ thread_position_in_threadgroup ]],
-                         uint blockIdx [[ threadgroup_position_in_grid ]])
+kernel void prefixFixup (device uint *input [[ buffer(ScanBufferIndexInput)   ]],
+                         device uint *aux   [[ buffer(ScanBufferIndexAux)     ]],
+                         constant uint& len [[ buffer(ScanBufferIndexLength)  ]],
+                         uint threadIdx     [[ thread_position_in_threadgroup ]],
+                         uint blockIdx      [[ threadgroup_position_in_grid   ]])
 {
     unsigned int t = threadIdx;
     unsigned int start = t + 2 * blockIdx * SCAN_BLOCKSIZE;
@@ -23,13 +23,13 @@ kernel void prefixFixup (device uint *input,
     if (start + SCAN_BLOCKSIZE < len)   input[start + SCAN_BLOCKSIZE] += aux[blockIdx];
 }
 
-kernel void prefixSum (device uint* input,
-                       device uint* output,
-                       device uint* aux,
-                       constant uint& len,
-                       constant uint& zeroff,
-                       uint threadIdx [[ thread_position_in_threadgroup ]],
-                       uint blockIdx [[ threadgroup_position_in_grid ]])
+kernel void prefixSum (device uint* input     [[ buffer(ScanBufferIndexInput)   ]],
+                       device uint* output    [[ buffer(ScanBufferIndexOutput)  ]],
+                       device uint* aux       [[ buffer(ScanBufferIndexAux)     ]],
+                       constant uint& len     [[ buffer(ScanBufferIndexLength)  ]],
+                       constant uint& zeroff  [[ buffer(ScanBufferIndexZeroff)  ]],
+                       uint threadIdx         [[ thread_position_in_threadgroup ]],
+                       uint blockIdx          [[ threadgroup_position_in_grid   ]])
 {
     threadgroup uint scan_array[SCAN_BLOCKSIZE << 1];
     unsigned int t1 = threadIdx + 2 * blockIdx * SCAN_BLOCKSIZE;
