@@ -14,9 +14,9 @@ kernel void scan_threadgroups(constant uint& len                                
 kernel void prefixFixup (device uint *input,
                          device uint *aux,
                          constant uint& len,
-                         uint tid [[ thread_position_in_grid ]])
+                         uint tid [[ thread_position_in_grid ]],
+                         uint threadIdx [[ thread_position_in_threadgroup ]])
 {
-    uint threadIdx = tid % SCAN_BLOCKSIZE;
     uint blockIdx = tid / SCAN_BLOCKSIZE;
     
     unsigned int t = threadIdx;
