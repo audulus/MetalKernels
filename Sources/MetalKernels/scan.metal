@@ -28,11 +28,9 @@ kernel void prefixSum (device uint* input,
                        device uint* aux,
                        constant uint& len,
                        constant uint& zeroff,
-                       uint tid [[ thread_position_in_grid ]])
+                       uint threadIdx [[ thread_position_in_threadgroup ]],
+                       uint blockIdx [[ threadgroup_position_in_grid ]])
 {
-    uint threadIdx = tid % SCAN_BLOCKSIZE;
-    uint blockIdx = tid / SCAN_BLOCKSIZE;
-    
     threadgroup uint scan_array[SCAN_BLOCKSIZE << 1];
     unsigned int t1 = threadIdx + 2 * blockIdx * SCAN_BLOCKSIZE;
     unsigned int t2 = t1 + SCAN_BLOCKSIZE;
