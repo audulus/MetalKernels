@@ -10,4 +10,4 @@ Useful kernels for parallel programming.
 
 [`CompactKernel`](https://github.com/Halfspace-LLC/MetalKernels/blob/main/Sources/MetalKernels/include/CompactKernel.h) implements stream compaction for values of user-specified size.
 
-[`RadixSortKernel`](https://github.com/Halfspace-LLC/MetalKernels/blob/main/Sources/MetalKernels/include/RadixSortKernel.h) implements radix sort for `uint32_t` values.
+[`RadixSortKernel`](https://github.com/Halfspace-LLC/MetalKernels/blob/main/Sources/MetalKernels/include/RadixSortKernel.h) implements radix sort for `uint32_t` values. (WIP. Not yet optimized.)
