@@ -28,7 +28,11 @@
 {
     for(int i=0;i<32;++i) {
         [splitKernel encodeSplitTo:buffer input:inputBuf output:outputBuf bit:i length:length];
-        std::swap(inputBuf, outputBuf);
+
+        // Swap.
+        auto tmp = inputBuf;
+        inputBuf = outputBuf;
+        outputBuf = tmp;
     }
     auto blit = [buffer blitCommandEncoder];
     [blit copyFromBuffer:inputBuf sourceOffset:0 toBuffer:outputBuf destinationOffset:0 size:length*sizeof(uint)];
