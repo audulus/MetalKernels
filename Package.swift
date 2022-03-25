@@ -28,5 +28,6 @@ let package = Package(
             name: "MetalKernelsTests",
             dependencies: ["MetalKernels"]),
     ],
+    swiftLanguageVersions: [.v5],
     cxxLanguageStandard: .cxx14
 )
