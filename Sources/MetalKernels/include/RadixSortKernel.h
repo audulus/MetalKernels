@@ -4,6 +4,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Radix sort for uint32 data.
 @interface RadixSortKernel : NSObject
 
 - (instancetype)init:(id<MTLDevice>)device;
