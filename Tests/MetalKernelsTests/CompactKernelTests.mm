@@ -27,6 +27,8 @@
 
 - (void)testCompact {
 
+    XCTAssertTrue(device.supportsFunctionPointers);
+
     int n = 10;
     std::vector<uint> vec(n);
     for(int i=0;i<n;++i) {
