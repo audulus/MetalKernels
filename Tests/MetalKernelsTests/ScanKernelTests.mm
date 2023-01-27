@@ -56,6 +56,39 @@
     }
 }
 
+- (void) testSmallScan {
+
+    int n = 10;
+
+    std::vector<uint> vec(n);
+    for(int i=0;i<n;++i)
+    {
+        vec[i] = 1;
+    }
+
+    auto inBuf = [device newBufferWithBytes:vec.data() length:vec.size()*sizeof(uint) options:MTLResourceStorageModeShared];
+
+    auto outBuf = [device newBufferWithLength:vec.size()*sizeof(uint) options:MTLResourceStorageModeShared];
+
+    auto buf = [queue commandBuffer];
+
+    [kernel encodeScanTo:buf input:inBuf output:outBuf length:n];
+
+    [buf commit];
+    [buf waitUntilCompleted];
+
+    uint* result = (uint*) outBuf.contents;
+
+    for(int i=0;i<n;++i)
+    {
+        XCTAssertEqual(result[i], i);
+        if(result[i] != i)
+        {
+            break;
+        }
+    }
+}
+
 - (void) testScan2 {
 
     int n = MAX_BUFFER_SIZE/sizeof(uint);
