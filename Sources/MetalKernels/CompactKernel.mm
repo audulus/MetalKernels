@@ -119,7 +119,7 @@
 }
 
 - (uint) maxLength {
-    return keepBuffer.length / sizeof(uint);
+    return uint(keepBuffer.length / sizeof(uint));
 }
 
 - (void) setMaxLength:(uint)maxLength {

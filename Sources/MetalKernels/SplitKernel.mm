@@ -36,7 +36,7 @@
 }
 
 - (uint) maxLength {
-    return eBuffer.length / sizeof(uint);
+    return uint(eBuffer.length / sizeof(uint));
 }
 
 - (void) setMaxLength:(uint)maxLength {
