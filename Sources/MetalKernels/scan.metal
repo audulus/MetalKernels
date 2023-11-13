@@ -43,8 +43,8 @@ kernel void prefixSum (device uint* input     [[ buffer(ScanBufferIndexInput)   
     unsigned int t2 = t1 + SCAN_BLOCKSIZE;
     
     // Pre-load into shared memory
-    scan_array[threadIdx] = (t1<len) ? input[t1] : 0.0f;
-    scan_array[threadIdx + SCAN_BLOCKSIZE] = (t2<len) ? input[t2] : 0.0f;
+    scan_array[threadIdx] = (t1<len) ? input[t1] : 0;
+    scan_array[threadIdx + SCAN_BLOCKSIZE] = (t2<len) ? input[t2] : 0;
     threadgroup_barrier(mem_flags::mem_threadgroup);
     
     // Reduction
