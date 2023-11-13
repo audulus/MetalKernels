@@ -1,4 +1,4 @@
-//  Copyright © 2022 Halfspace LLC. All rights reserved.
+//  Copyright © Audulus LLC. Distributed under the MIT License.
 
 #import <Foundation/Foundation.h>
 #import <XCTest/XCTest.h>

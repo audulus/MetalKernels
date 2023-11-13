@@ -1,4 +1,4 @@
-//  Copyright © 2020 Audulus LLC. All rights reserved.
+//  Copyright © Audulus LLC. Distributed under the MIT License.
 
 #import "GetMetalLibrary.h"
 #import "ScanKernel.h"

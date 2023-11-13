@@ -1,4 +1,4 @@
-//  Copyright © 2020 Audulus LLC. All rights reserved.
+//  Copyright © Audulus LLC. Distributed under the MIT License.
 
 #ifndef GetMetalLibrary_h
 #define GetMetalLibrary_h

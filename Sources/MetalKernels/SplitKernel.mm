@@ -1,4 +1,4 @@
-//  Copyright © 2017 Halfspace LLC. All rights reserved.
+//  Copyright © Audulus LLC. Distributed under the MIT License.
 
 #import "SplitKernel.h"
 #import "GetMetalLibrary.h"
