@@ -14,12 +14,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// - Parameters:
 ///   - buffer: command buffer where commands are encoded
 ///   - inputBuf: input buffer of int32s to be split
+///   - inputIndexBuf: buffer of int32 indices
 ///   - outputBuf: output buffer where int32s are written
+///   - outputIndexBuf: output buffer where indices are written
 ///   - bit: pivot bit (output will be sorted by this bit)
 ///   - length: number of int32s to be split
 - (void) encodeSplitTo:(id<MTLCommandBuffer>)buffer
                  input:(id<MTLBuffer>)inputBuf
+          inputIndices:(id<MTLBuffer>)inputIndexBuf
                 output:(id<MTLBuffer>)outputBuf
+         outputIndices:(id<MTLBuffer>)outputIndexBuf
                    bit:(uint)bit
                 length:(uint)length;
 

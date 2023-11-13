@@ -33,9 +33,23 @@
 
     auto outBuf = [device newBufferWithLength:vec.size()*sizeof(uint) options:MTLResourceStorageModeShared];
 
+    std::vector<uint> idx(n);
+    for(int i=0;i<n;++i) {
+        idx[i] = i;
+    }
+
+    auto inIndicesBuf = [device newBufferWithBytes:idx.data() length:idx.size()*sizeof(uint) options:MTLResourceStorageModeShared];
+
+    auto outIndicesBuf = [device newBufferWithLength:idx.size()*sizeof(uint) options:MTLResourceStorageModeShared];
+
     auto buf = [queue commandBuffer];
 
-    [kernel encodeSortTo:buf input:inBuf output:outBuf length:n];
+    [kernel encodeSortTo:buf
+                   input:inBuf
+            inputIndices:inIndicesBuf
+                  output:outBuf
+           outputIndices:outIndicesBuf
+                  length:n];
 
     [buf commit];
     [buf waitUntilCompleted];
@@ -44,6 +58,11 @@
 
     for(int i=0;i<n;++i) {
         XCTAssertEqual(outPtr[i], i);
+    }
+
+    auto outIndicesPtr = (uint*) outIndicesBuf.contents;
+    for(int i=0;i<n;++i) {
+        XCTAssertEqual(outIndicesPtr[i], n-i-1);
     }
 
 }
@@ -65,9 +84,23 @@
 
     auto outBuf = [device newBufferWithLength:vec.size()*sizeof(uint) options:MTLResourceStorageModeShared];
 
+    std::vector<uint> idx(n);
+    for(int i=0;i<n;++i) {
+        idx[i] = i;
+    }
+
+    auto inIndicesBuf = [device newBufferWithBytes:idx.data() length:idx.size()*sizeof(uint) options:MTLResourceStorageModeShared];
+
+    auto outIndicesBuf = [device newBufferWithLength:idx.size()*sizeof(uint) options:MTLResourceStorageModeShared];
+
     auto buf = [queue commandBuffer];
 
-    [kernel encodeSortTo:buf input:inBuf output:outBuf length:n];
+    [kernel encodeSortTo:buf
+                   input:inBuf
+            inputIndices:inIndicesBuf
+                  output:outBuf
+           outputIndices:outIndicesBuf
+                  length:n];
 
     [buf commit];
     [buf waitUntilCompleted];

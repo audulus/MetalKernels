@@ -4,7 +4,9 @@
 
 enum SplitBufferIndex {
     SplitBufferIndexInput,
+    SplitBufferIndexInputIndices,
     SplitBufferIndexOutput,
+    SplitBufferIndexOutputIndices,
     SplitBufferIndexCount,
     SplitBufferIndexBit,
     SplitBufferIndexE,

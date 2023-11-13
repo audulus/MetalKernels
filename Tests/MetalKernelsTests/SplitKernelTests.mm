@@ -26,11 +26,21 @@
 
     auto outBuf = [device newBufferWithLength:vec.size()*sizeof(uint) options:MTLResourceStorageModeShared];
 
+    auto inIndicesBuf = [device newBufferWithBytes:vec.data() length:vec.size()*sizeof(uint) options:MTLResourceStorageModeShared];
+
+    auto outIndicesBuf = [device newBufferWithLength:vec.size()*sizeof(uint) options:MTLResourceStorageModeShared];
+
     auto queue = [device newCommandQueue];
 
     auto buf = [queue commandBuffer];
 
-    [kernel encodeSplitTo:buf input:inBuf output:outBuf bit:0 length:n];
+    [kernel encodeSplitTo:buf
+                    input:inBuf
+             inputIndices:inIndicesBuf
+                   output:outBuf
+            outputIndices:outIndicesBuf
+                      bit:0
+                   length:n];
 
     [buf commit];
     [buf waitUntilCompleted];
@@ -40,6 +50,11 @@
 
     for(int i=0;i<n;++i) {
         XCTAssertEqual(outPtr[i], expected[i]);
+    }
+
+    auto outIndicesPtr = (uint*) outIndicesBuf.contents;
+    for(int i=0;i<n;++i) {
+        XCTAssertEqual(outIndicesPtr[i], expected[i]);
     }
 
 }

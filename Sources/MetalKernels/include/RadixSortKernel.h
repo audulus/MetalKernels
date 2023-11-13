@@ -9,9 +9,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init:(id<MTLDevice>)device;
 - (void) encodeSortTo:(id<MTLCommandBuffer>)buffer
-                 input:(id<MTLBuffer>)inputBuf
-                output:(id<MTLBuffer>)outputBuf
-                length:(uint)length;
+                input:(id<MTLBuffer>)inputBuf
+         inputIndices:(id<MTLBuffer>)inputIndicesBuf
+               output:(id<MTLBuffer>)outputBuf
+         outputIndices:(id<MTLBuffer>)outputIndicesBuf
+               length:(uint)length;
 
 @property uint maxLength;
 

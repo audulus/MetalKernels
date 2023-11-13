@@ -63,7 +63,9 @@
 
 - (void) encodeSplitTo:(id<MTLCommandBuffer>)buffer
                  input:(id<MTLBuffer>)inputBuf
+          inputIndices:(id<MTLBuffer>)inputIndexBuf
                 output:(id<MTLBuffer>)outputBuf
+         outputIndices:(id<MTLBuffer>)outputIndexBuf
                    bit:(uint)bit
                 length:(uint)length
 {
@@ -89,7 +91,9 @@
     [encoder setComputePipelineState:scatterPipeline];
 
     [encoder setBuffer:inputBuf offset:0 atIndex:SplitBufferIndexInput];
+    [encoder setBuffer:inputIndexBuf offset:0 atIndex:SplitBufferIndexInputIndices];
     [encoder setBuffer:outputBuf offset:0 atIndex:SplitBufferIndexOutput];
+    [encoder setBuffer:outputIndexBuf offset:0 atIndex:SplitBufferIndexOutputIndices];
     [encoder setBytes:&bit length:sizeof(uint) atIndex:SplitBufferIndexBit];
     [encoder setBuffer:eBuffer offset:0 atIndex:SplitBufferIndexE];
     [encoder setBuffer:fBuffer offset:0 atIndex:SplitBufferIndexF];

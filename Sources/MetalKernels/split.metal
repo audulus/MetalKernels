@@ -17,13 +17,15 @@ kernel void split_prep(device const uint* input [[ buffer(SplitBufferIndexInput)
     e[tid] = (input[tid] & (1<<bit)) == 0;
 }
 
-kernel void split_scatter(device const uint* input [[ buffer(SplitBufferIndexInput)  ]],
-                          device uint* output      [[ buffer(SplitBufferIndexOutput) ]],
-                          constant uint& bit       [[ buffer(SplitBufferIndexBit)    ]],
-                          device const uint* e     [[ buffer(SplitBufferIndexE)      ]],
-                          device const uint* f     [[ buffer(SplitBufferIndexF)      ]],
-                          constant uint& count     [[ buffer(SplitBufferIndexCount)  ]],
-                          uint tid                 [[ thread_position_in_grid        ]])
+kernel void split_scatter(device const uint* input        [[ buffer(SplitBufferIndexInput)         ]],
+                          device const uint* inputIndices [[ buffer(SplitBufferIndexInputIndices)  ]],
+                          device uint* output             [[ buffer(SplitBufferIndexOutput)        ]],
+                          device uint* outputIndices      [[ buffer(SplitBufferIndexOutputIndices) ]],
+                          constant uint& bit              [[ buffer(SplitBufferIndexBit)           ]],
+                          device const uint* e            [[ buffer(SplitBufferIndexE)             ]],
+                          device const uint* f            [[ buffer(SplitBufferIndexF)             ]],
+                          constant uint& count            [[ buffer(SplitBufferIndexCount)         ]],
+                          uint tid                        [[ thread_position_in_grid               ]])
 {
     if(tid >= count) {
         return;
@@ -35,4 +37,5 @@ kernel void split_scatter(device const uint* input [[ buffer(SplitBufferIndexInp
     uint d = b ? t : f[tid];
 
     output[d] = input[tid];
+    outputIndices[d] = inputIndices[tid];
 }
