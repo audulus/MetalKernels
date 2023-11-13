@@ -1,4 +1,4 @@
-//  Copyright © 2021 Halfspace LLC. All rights reserved.
+//  Copyright © Audulus LLC. Distributed under the MIT License.
 
 #ifndef scan_h
 #define scan_h

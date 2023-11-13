@@ -1,4 +1,4 @@
-//  Copyright © 2021 Halfspace LLC. All rights reserved.
+//  Copyright © Audulus LLC. Distributed under the MIT License.
 
 #import <XCTest/XCTest.h>
 #import "CompactKernel.h"
