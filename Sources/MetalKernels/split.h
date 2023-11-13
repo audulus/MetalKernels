@@ -1,7 +1,6 @@
 //  Copyright © Audulus LLC. Distributed under the MIT License.
 
-#ifndef split_h
-#define split_h
+#pragma once
 
 enum SplitBufferIndex {
     SplitBufferIndexInput,
@@ -11,5 +10,3 @@ enum SplitBufferIndex {
     SplitBufferIndexE,
     SplitBufferIndexF
 };
-
-#endif /* split_h */
