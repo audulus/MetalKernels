@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param itemSize size of each item in bytes
 /// @param length number of items in input buffer
 ///
-/// After running, the final element of keep is one less than the number of elements output.
+/// After running, the final element of `getDest` is one less than the number of elements output.
 - (void) encodeCompactTo:(id<MTLCommandBuffer>)buffer
                    input:(id<MTLBuffer>)inputBuf
                     keep:(id<MTLBuffer>)keep
