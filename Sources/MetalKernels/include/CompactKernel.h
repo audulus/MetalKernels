@@ -4,7 +4,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Stream compaction using a user-specified predicate.
+/// Stream compaction.
 @interface CompactKernel : NSObject
 
 /// Create a CompactKernel.
