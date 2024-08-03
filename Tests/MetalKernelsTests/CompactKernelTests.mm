@@ -55,6 +55,8 @@
     for(int i=0;i<n;++i) {
         XCTAssertEqual(outPtr[i], expected[i]);
     }
+
+    XCTAssertEqual(destPtr[9], 4);
 }
 
 // Many iOS devices have a max buffer size of 256MB.
@@ -109,6 +111,10 @@
     }
     XCTAssertEqual(compacted[0], 1);
     printf("CPU time %f\n", (float) [[NSDate date] timeIntervalSinceDate:start]);
+
+    auto destPtr = (uint*) [kernel getDest].contents;
+
+    XCTAssertEqual(destPtr[n-1], n/2-1);
 }
 
 @end
