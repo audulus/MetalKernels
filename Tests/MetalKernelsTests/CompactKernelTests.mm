@@ -18,11 +18,7 @@
 - (void)setUp {
     device = MTLCreateSystemDefaultDevice();
     queue = [device newCommandQueue];
-    auto lib = MetalKernelsGetMetalLibrary(device);
-    assert(lib);
-    auto fn = [lib newFunctionWithName:@"is_odd"];
-    assert(fn);
-    kernel = [[CompactKernel alloc] initWithPredicate:fn];
+    kernel = [[CompactKernel alloc] initWithDevice:device];
 }
 
 - (void)testCompact {
@@ -31,24 +27,28 @@
 
     int n = 10;
     std::vector<uint> vec(n);
+    std::vector<uint> odd(n);
     for(int i=0;i<n;++i) {
         vec[i] = i;
+        odd[i] = i % 2;
     }
 
     auto inBuf = [device newBufferWithBytes:vec.data() length:vec.size()*sizeof(uint) options:MTLResourceStorageModeShared];
+
+    auto keepBuf = [device newBufferWithBytes:odd.data() length:odd.size()*sizeof(uint) options:MTLResourceStorageModeShared];
 
     auto outBuf = [device newBufferWithLength:vec.size()*sizeof(uint) options:MTLResourceStorageModeShared];
 
     auto buf = [queue commandBuffer];
 
-    [kernel encodeCompactTo:buf input:inBuf output:outBuf itemSize:sizeof(uint) length:n];
+    [kernel encodeCompactTo:buf input:inBuf keep:keepBuf output:outBuf itemSize:sizeof(uint) length:n];
 
     [buf commit];
     [buf waitUntilCompleted];
 
     auto outPtr = (uint*) outBuf.contents;
-    auto keepPtr = (uint*) [kernel getKeep].contents;
     auto destPtr = (uint*) [kernel getDest].contents;
+    auto keepPtr = (uint*) keepBuf.contents;
 
     uint expected[10] = { 1, 3, 5, 7, 9, 0, 0, 0, 0, 0 };
 
@@ -67,18 +67,22 @@
     kernel.maxLength = n;
 
     std::vector<uint> vec(n);
+    std::vector<uint> odd(n);
     for(int i=0;i<n;++i)
     {
         vec[i] = i;
+        odd[i] = i % 2;
     }
 
     auto inBuf = [device newBufferWithBytes:vec.data() length:vec.size()*sizeof(uint) options:MTLResourceStorageModeShared];
+
+    auto keepBuf = [device newBufferWithBytes:odd.data() length:odd.size()*sizeof(uint) options:MTLResourceStorageModeShared];
 
     auto outBuf = [device newBufferWithLength:vec.size()*sizeof(uint) options:MTLResourceStorageModeShared];
 
     auto buf = [queue commandBuffer];
 
-    [kernel encodeCompactTo:buf input:inBuf output:outBuf itemSize:sizeof(uint) length:n];
+    [kernel encodeCompactTo:buf input:inBuf keep:keepBuf output:outBuf itemSize:sizeof(uint) length:n];
 
     [buf commit];
     [buf waitUntilCompleted];

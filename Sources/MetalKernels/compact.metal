@@ -38,9 +38,3 @@ kernel void compact_scatter(device const char* input,
     }
 
 }
-
-// For testing.
-[[visible]]
-bool is_odd(device char* data) {
-    return (*(device uint*) data) & 1u;
-}
