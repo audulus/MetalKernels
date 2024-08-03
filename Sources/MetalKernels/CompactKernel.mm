@@ -7,7 +7,6 @@
 
 @interface CompactKernel ()
 {
-    id<MTLComputePipelineState> compactPipeline;
     id<MTLComputePipelineState> scatterPipeline;
     id<MTLBuffer> destBuffer;
     ScanKernel* scanKernel;
@@ -22,27 +21,6 @@
     self = [super init];
     if (self) {
         auto lib = MetalKernelsGetMetalLibrary(device);
-
-        auto descriptor = [[MTLComputePipelineDescriptor alloc] init];
-
-        // Set the main compute function.
-        descriptor.computeFunction = [lib newFunctionWithName:@"compact_prep"];
-
-        // Set to YES to allow the compiler to make certain optimizations.
-        descriptor.threadGroupSizeIsMultipleOfThreadExecutionWidth = YES;
-
-        NSError *error = nil;
-
-        // Create the compute pipeline state.
-        compactPipeline = [device newComputePipelineStateWithDescriptor:descriptor
-                                                                 options:0
-                                                              reflection:nil
-                                                                   error:&error];
-
-        if (!compactPipeline) {
-            NSLog(@"Failed to create pipeline state: %@", error.localizedDescription);
-            return nil;
-        }
 
         destBuffer = [device newBufferWithLength:1024 options:MTLResourceStorageModeShared];
 
@@ -97,7 +75,7 @@
 
 - (void) setMaxLength:(uint)maxLength {
     if(destBuffer.length / sizeof(uint) != maxLength) {
-        auto device = compactPipeline.device;
+        auto device = scatterPipeline.device;
         auto bytes = maxLength * sizeof(uint);
         destBuffer = [device newBufferWithLength:bytes options:MTLResourceStorageModeShared];
     }
